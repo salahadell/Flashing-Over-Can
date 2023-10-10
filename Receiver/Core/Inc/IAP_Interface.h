@@ -119,7 +119,6 @@ typedef enum{
 	BTLDR = 0xFF
 }RUN_MODE;
 
-void Nasr_SystemInit(void);
 void IAP_Init(void);
 void IAP_RunBootloader(void);
 void IAP_WriteUsrProgram(UINT16_t arrSize, UINT32_t *prog_arr);
