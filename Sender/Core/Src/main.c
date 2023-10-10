@@ -42,9 +42,13 @@
 
 /* Private variables ---------------------------------------------------------*/
 CAN_HandleTypeDef hcan;
+/* Buffer to Put the data that are intended to send*/
 uint8_t TxData[8] ;
+/* Global Variable used in array copy function to determine where the last index for the array*/ 
 uint16_t Index = 0;
+/*Flag to stop the array from sending data anymore*/
 uint8_t StopSendArray = 0;
+/*array contain the hex of the first app*/
 uint8_t app1_buffer[8800] =
              {0x00,0x50,0x00,0x20,0x6D,0x38,0x00,0x08,
 		0xE5,0x37,0x00,0x08,0xF1,0x37,0x00,0x08,
@@ -1146,6 +1150,8 @@ uint8_t app1_buffer[8800] =
 		0x0D,0x31,0x00,0x08,0x00,0x24,0xF4,0x00,
 		0x10,0x00,0x00,0x00,0x01,0x00,0x00,0x00,
 		0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF};
+
+/*array contain the hex of the second app*/
 uint8_t app2_buffer[8776] = 
              {0x00,0x50,0x00,0x20,0x59,0x68,0x00,0x08,
 		0xD1,0x67,0x00,0x08,0xDD,0x67,0x00,0x08,
@@ -2251,9 +2257,13 @@ uint8_t app2_buffer[8776] =
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+/*Enable clock and set the ports and the pins used*/
 static void MX_GPIO_Init(void);
+/*Enable clock and init the can*/
 static void MX_CAN_Init(void);
+/*prototype for array copy function*/
 static void Array_Copy(uint8_t *arr1,uint8_t *arr2,uint16_t *LastIndex,uint32_t Array_Size);
+/*prototype for MY CAN transmit  function*/
 static void MY_CAN_transmit(uint8_t* payload,uint16_t ID,uint8_t DLC ,uint32_t RTR_MODE );
 
 /* USER CODE BEGIN PFP */
@@ -2291,9 +2301,12 @@ int main(void)
 	/* USER CODE END SysInit */
 
 	/* Initialize all configured peripherals */
+	/*init gpio*/
 	MX_GPIO_Init();
+	/*init can*/
 	MX_CAN_Init();
 	/* USER CODE BEGIN 2 */
+	/*run the can*/
 	HAL_CAN_Start(&hcan);
 	/* USER CODE END 2 */
 
@@ -2303,51 +2316,72 @@ int main(void)
 	{
 		/* USER CODE BEGIN 3 */
 		/* USER CODE END WHILE */
+		/*put the index to zero to reset the array copy and send again if you want*/
 		Index = 0;
+		/*send the first app*/
 		if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_0) == 0)
 		{
-			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_0) == 0){}
+			/*wait while you pressed the button or wait till you release the button to avoid debouncing */
+			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_0) == 0)
+			{
+				/*Do Nothing*/
+			}
+			/*send this id to enter the bootloader*/
 			MY_CAN_transmit(0x0,0x301,1,CAN_RTR_DATA);
-		    HAL_Delay(1000);
+		    	HAL_Delay(1000);
 
 			while(0 == StopSendArray)
 			{
+				/*copy and send frame after frame*/
 				Array_Copy(TxData,app1_buffer,&Index,8800);
 				MY_CAN_transmit(TxData,0x300,8,CAN_RTR_DATA);
 			}
 			/*END OF FRAME ID*/
 			MY_CAN_transmit(0x0,0x3FF,1,CAN_RTR_DATA);
+			/*reset the flag*/
 			StopSendArray = 0;
 		}
-
+		/*Send the Second app*/
 		else if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_1) == 0)
 		{
-			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_1) == 0){}
+			/*wait while you pressed the button or wait till you release the button to avoid debouncing */
+			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_1) == 0)
+			{
+				/*Do Nothing*/
+			}
+			/*send this id to enter the bootloader*/
 			MY_CAN_transmit(0x0,0x301,1,CAN_RTR_DATA);
-		    HAL_Delay(1000);
+		    	HAL_Delay(1000);
 
 			while(0 == StopSendArray)
 			{
+				/*copy and send frame after frame*/
 				Array_Copy(TxData,app2_buffer,&Index,8776);
 				MY_CAN_transmit(TxData,0x300,8,CAN_RTR_DATA);
 			}
 			/*END OF FRAME ID*/
 			MY_CAN_transmit(0x0,0x3FF,1,CAN_RTR_DATA);
+			/*reset the flag*/
 			StopSendArray = 0;
 		}
-
+		/*Send the ID that make the app go to the bootloader again*/
 		else if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_10) == 0)
 		{
-			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_10) == 0){}
+			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_10) == 0)
+			{
+				/*Do Nothing*/
+			}
 			MY_CAN_transmit(0x0,0x301,1,CAN_RTR_DATA);
 
 		}
-
+		/* Send the ID that switch the apps*/
 		else if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_11) == 0)
 		{
-			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_11) == 0){}
+			while(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_11) == 0)
+			{
+				/*Do Nothing*/
+			}
 			MY_CAN_transmit(0x0,0x302,1,CAN_RTR_DATA);
-
 		}
 		else
 		{
@@ -2456,6 +2490,8 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+/*This Function used to copy the hex or the array data of the apps into the buffer (TxData)*/
 static void Array_Copy(uint8_t *arr1,uint8_t *arr2,uint16_t *LastIndex,uint32_t Array_Size)
 {
 	uint8_t j = 0;
@@ -2476,6 +2512,7 @@ static void Array_Copy(uint8_t *arr1,uint8_t *arr2,uint16_t *LastIndex,uint32_t 
 	}
 }
 /* USER CODE END 4 */
+/* This Function used to crreat the mailbox and config the frame also check on the mailbox and then send the frame after load it from TxData*/
 static void MY_CAN_transmit(uint8_t* payload,uint16_t ID,uint8_t DLC,uint32_t RTR_MODE )
 {
 	CAN_TxHeaderTypeDef TxHeader;
