@@ -5,13 +5,13 @@ This system comprises two key components: the Receiver and the Transceiver, each
 specific role in achieving the desired functionality.
 
 ## Videos Folder Link 
-
+https://drive.google.com/file/d/1VZKlg_Una2rk8ubwLqKDttS8SAGxAwdQ/view?usp=drivesdk
 ## Team Members     
 |      Name    |      Code     |
 | ------------ | ------------- |
 | Salah El-din Adel   | 198    |
 | Omar Mohamed Shawky | 395    |
 | Amr Fawzy Fathy     | 439    |
-| Ahmed Elsayed Nasr  |        |
-| Seif Eldin Shebl    |        |
-| Ali Embaby          |        |
+| Ahmed Elsayed Nasr  | 1069   |
+| Seif Eldin Shebl    | 894    |
+| Ali Ahmed Embaby    | 980    |
