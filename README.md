@@ -8,7 +8,7 @@ specific role in achieving the desired functionality.
 2) Switch between them so if there is a problem with one of them you can switch to the other version
 3) The bootloader accepts data only from specific IDs
 ## Features will be Supported 
-1) Secure the applications before sending them over the CAN to acheive confidentiality, integrity and authenticity. This feature will support features number (3) to prevent phishing attacks
+1) Secure the applications before sending them over the CAN to acheive confidentiality, integrity and authenticity. This feature will support feature number (3) to prevent phishing attacks
 # For full functionality check this PDF
 https://github.com/salahadell/Flashing-Over-Can/blob/main/STM32-Microcontroller-Code-Flashing-via-CAN-Communication-Protocol.pdf
 
