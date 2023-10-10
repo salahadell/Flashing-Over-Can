@@ -158,7 +158,7 @@ void IAP_RunBootloader(){
 }
 /***************************Interrupt Handlers***************************/
 
-void salah(void)
+void Shift_VECT_TAB_ADDRESS(void)
 {
 		RUN_MODE active_app = BTLDR;
 

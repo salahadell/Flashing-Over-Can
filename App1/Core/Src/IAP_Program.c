@@ -7,7 +7,7 @@
 #include "main.h"
 #include "IAP_Interface.h"
 
-void salah(void)
+void Shift_VECT_TAB_ADDRESS(void)
 {
 	SCB->VTOR = 0x3000;
 /*
