@@ -57,8 +57,6 @@
   */
 
 #include "stm32f1xx.h"
-
-extern void salah(void);
 /**
   * @}
   */
