@@ -128,7 +128,7 @@ void FLASH_MassErase(){
 	FLASH_CR |= (1 << FLASH_CR_STRT);
 }
 
-void Nasr_FLASH_PageErase(UINT8_t page_num){
+void FLASH_Page_Erase(UINT8_t page_num){
 	/*calculate that page start address*/
 	FLASH_AR = FLASH_BASE_ADDR + (1024 * page_num);
 	/*start erase operation*/
