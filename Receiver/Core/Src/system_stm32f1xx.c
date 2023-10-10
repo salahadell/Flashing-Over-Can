@@ -58,7 +58,7 @@
 
 #include "stm32f1xx.h"
 
-extern void salah(void);
+extern void Shift_VECT_TAB_ADDRESS(void);
 /**
   * @}
   */
