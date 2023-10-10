@@ -101,6 +101,10 @@ void IAP_WriteUsrProgram(UINT16_t arrSize, UINT32_t *prog_arr){
 		{
 			HAL_NVIC_SystemReset();
 		}
+		else
+		{
+			/*Do Nothing*/
+		}
 
 		if(TRUE == EOF_Flag)
 		{
