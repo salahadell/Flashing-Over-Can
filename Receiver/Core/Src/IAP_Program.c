@@ -48,16 +48,14 @@ void Nasr_SystemInit(){
 	GPIOC_CRH = 0x14144444;
 }
 
-void IAP_Init(){
-	/*enable port c clock*/
-
-	/*set port c to output with open drain*/
-	//GPIOC_CRH = 0x14144444;
+void IAP_Init()
+{
 	/*set pin C13 to high*/
 	GPIOC_BSRR |= (1 << 13);
 }
 
-void IAP_WriteUsrProgram(UINT16_t arrSize, UINT32_t *prog_arr){
+void IAP_WriteUsrProgram(UINT16_t arrSize, UINT32_t *prog_arr)
+{
 	RUN_MODE loaded_usr_app = BTLDR;
 	UINT32_t write_addr = 0;
 	UINT16_t index = 0;
