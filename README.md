@@ -1,5 +1,6 @@
 ## Flashing-Over-Can
 The aim of this project is to develop a robust system that enables the flashing of code between two STM32 microcontrollers using the CAN communication protocol.
+
 This system comprises two key components: the Receiver and the Transceiver, each serving a
 specific role in achieving the desired functionality.
 
